@@ -1,99 +1,97 @@
 <!DOCTYPE html>
-<html lang="es">
+<html lang="ca">
 <head>
-    <meta property="og:title" content="Cristina & Josep — Invitació de boda">
-    <meta property="og:description" content="Ens casem! Entra aquí per confirmar assistència.">
-    <meta property="og:image" content="https://vuvils77.github.io/Boda-invitacio/assets/img/portada.jpg">
-    <meta property="og:type" content="website">
-    <meta charset="UTF-8">
-    <title>Cristina & Josep</title>
-     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cristina & Josep — Invitació</title>
 
-<style>
+  <style>
     body {
-     background-image: url(assets/img/fondo.jpg);
-     background-size: cover;
-     background-position: center;
-     background-repeat: no-repeat;
-     font-family: Arial, sans-serif;
-     margin: 0;
-     padding: 20px;
-     text-align: center;
+      background-image: url('assets/img/fondo.jpg');
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 20px;
+      text-align: center;
+      position: relative;
+    }
+
+    /* Capa suave para mejorar la lectura */
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(255,255,255,0.6);
+      z-index: -1;
     }
 
     .card {
-      max-width: 800px;
-      margin: auto;
+      max-width: 500px;
+      margin: 40px auto;
+      padding: 20px;
       background: white;
-      padding: 25px;
       border-radius: 12px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    }
-
-    h1 {
-      margin-top: 0;
-    }
-
-    input, select, textarea, button {
-      width: 100%;
-      margin: 10px 0;
-      padding: 12px;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-      font-size: 16px;
-    }
-
-    button {
-      background: #c19a6b;
-      color: white;
-      border: none;
-      cursor: pointer;
-      font-size: 16px;
-    }
-
-    button:hover {
-      background: #a88256;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     }
 
     .hidden {
       display: none;
     }
 
-    hr {
-      margin: 30px 0;
+    .btn {
+      padding: 12px 20px;
+      background: #c19a6b;
+      border: none;
+      border-radius: 8px;
+      color: white;
+      font-size: 18px;
+      cursor: pointer;
+      margin-top: 20px;
     }
 
-    /* Contenedor responsivo para el iframe del formulario */
-    .iframe-wrap {
-      position: relative;
-      padding-bottom: 56.25%;
-      height: 0;
-      overflow: hidden;
-      margin-top: 10px;
-      margin-bottom: 10px;
+    .btn:hover {
+      background: #a88256;
     }
-    .iframe-wrap iframe {
-      position: absolute;
-      top: 0;
-      left: 0;
-      width: 100%;
-      height: 100%;
-      border: 0;
+
+    .fade-in {
+      opacity: 0;
+      animation: fadeIn 1.2s forwards;
+    }
+
+    @keyframes fadeIn {
+      to { opacity: 1; }
     }
   </style>
 </head>
+
 <body>
 
   <!-- BLOQUEO POR CÓDIGO -->
   <div class="card" id="login">
-    <h2>💌 Invitació privada 💌</h2>
-    <p>Introdueix el teu codi d'activació</p>
-    <input type="password" id="inviteCode" placeholder="Código">
-    <button onclick="checkCode()">Entrar</button>
-    <p id="error" style="color:red;"></p>
+    <h2>Introdueix el teu codi d'invitació</h2>
+    <input type="text" id="inviteCode" placeholder="Codi" style="padding:10px; width:80%; font-size:16px;">
+    <br><br>
+    <button class="btn" onclick="checkCode()">Entrar</button>
+    <p id="error" style="color:red; margin-top:10px;"></p>
   </div>
 
-  <!-- CONTENIDO PRINCIPAL -->
+  <!-- PANTALLA DE BENVINGUDA -->
+  <div class="card hidden" id="welcome">
+    <h1 class="fade-in">💍 Cristina & Josep 💍</h1>
+    <p class="fade-in" style="animation-delay:0.2s;">Benvingut/da, <span id="welcomeName"></span></p>
+    <p class="fade-in" style="animation-delay:0.4s;">Ens faria molta il·lusió que ens acompanyessis en aquest dia tan especial.</p>
+
+    <button class="btn fade-in" style="animation-delay:0.6s;" onclick="mostrarInvitacio()">
+      Obrir invitació
+    </button>
+  </div>
+
+  <!-- INVITACIÓ PRINCIPAL -->
   <div class="card hidden" id="content">
     <h1>💍 Cristina & Josep 💍</h1>
     <p>Ens casem i ens faria molta il·lusió que ens acompanyessis</p>
@@ -103,39 +101,45 @@
 
     <hr>
 
-    <h2>Confirmació d'assistencia</h2>
-
-    <!-- Formulari Google -->
-    <div class="iframe-wrap">
-      <iframe id="gform"
-        src="https://docs.google.com/forms/d/e/1FAIpQLSe4v23zvDN_D4OaMPVGzyNF6M2AoGmAF9C4a3fyRDy6Q3FkfA/viewform?embedded=true"
-        frameborder="0" marginheight="0" marginwidth="0">
-        Cargando…
-      </iframe>
-    </div>
-
-    <p style="font-size:0.9em; color:#666;">Si prefieres, también puedes responder con el enlace que te hemos enviado por correo.</p>
+    <h2>Confirmació d'assistència</h2>
+    <button class="btn" onclick="anarAFormulari()">
+      Confirmar assistència
+    </button>
   </div>
 
   <script>
-    const validCodes = [
-      "NODI"
-    ];
+    // Códigos personalizados por invitado
+    const invitats = {
+      "CANCABUS": "Josep",
+      "CRIS2027": "Cristina",
+      "FAM001": "Família 1",
+      "FAM002": "Família 2"
+      // Afegir més aquí...
+    };
 
     function checkCode() {
       const code = document.getElementById("inviteCode").value.trim().toUpperCase();
-      if (validCodes.includes(code)) {
+      const nom = invitats[code];
+
+      if (nom) {
+        localStorage.setItem("nomInvitat", nom);
+
         document.getElementById("login").classList.add("hidden");
-        document.getElementById("content").classList.remove("hidden");
+        document.getElementById("welcome").classList.remove("hidden");
+
+        document.getElementById("welcomeName").innerText = nom;
       } else {
-        document.getElementById("error").innerText = "Código incorrecto";
+        document.getElementById("error").innerText = "Codi incorrecte";
       }
     }
 
-    // Función de ejemplo si mantienes un formulario local; ahora no se usa porque usamos Google Forms
-    function submitForm(e) {
-      if (e) e.preventDefault();
-      alert("¡Gràcies! Hem rebut la teva resposta ❤️");
+    function mostrarInvitacio() {
+      document.getElementById("welcome").classList.add("hidden");
+      document.getElementById("content").classList.remove("hidden");
+    }
+
+    function anarAFormulari() {
+      alert("Aquí anirà el formulari connectat a Google Sheets 😊");
     }
   </script>
 
