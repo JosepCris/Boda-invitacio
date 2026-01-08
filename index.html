@@ -62,15 +62,6 @@
       transform: scale(0.97);
     }
 
-    .fade-in {
-      opacity: 0;
-      animation: fadeIn 1.2s forwards;
-    }
-
-    @keyframes fadeIn {
-      to { opacity: 1; }
-    }
-
     .card h2, .card h1 {
       font-family: "Georgia", serif;
       color: #6b4f3f;
@@ -92,40 +83,6 @@
       border-color: #c19a6b;
       box-shadow: 0 0 4px rgba(193,154,107,0.5);
     }
-
-    /* Animació camp acompanyant */
-    .fade-field {
-      opacity: 0;
-      transform: translateY(-5px);
-      transition: opacity 0.4s ease, transform 0.4s ease;
-    }
-
-    .fade-field.show {
-      opacity: 1;
-      transform: translateY(0);
-    }
-
-    /* Animació del sobre */
-    .sobre-container {
-      position: relative;
-      width: 250px;
-      margin: 0 auto;
-    }
-
-    .sobre {
-      width: 100%;
-      transition: opacity 1s ease, transform 1s ease;
-    }
-
-    #sobreTancat.open {
-      opacity: 0;
-      transform: scale(0.9);
-    }
-
-    #sobreObert.show {
-      opacity: 1;
-      transform: scale(1.05);
-    }
   </style>
 </head>
 
@@ -140,21 +97,13 @@
     <p id="error" style="color:red; margin-top:10px;"></p>
   </div>
 
-  <!-- ANIMACIÓ DEL SOBRE -->
-  <div class="card hidden" id="sobreAnim">
-    <div class="sobre-container">
-      <img src="assets/img/sobre-tancat.png" id="sobreTancat" class="sobre">
-      <img src="assets/img/sobre-obert.png" id="sobreObert" class="sobre hidden">
-    </div>
-  </div>
-
   <!-- PANTALLA DE BENVINGUDA -->
   <div class="card hidden" id="welcome">
-    <h1 class="fade-in">💍 Cristina & Josep 💍</h1>
-    <p class="fade-in" style="animation-delay:0.2s;">Benvingut/da, <span id="welcomeName"></span></p>
-    <p class="fade-in" style="animation-delay:0.4s;">Ens faria molta il·lusió que ens acompanyessis en aquest dia tan especial.</p>
+    <h1>💍 Cristina & Josep 💍</h1>
+    <p>Benvingut/da, <span id="welcomeName"></span></p>
+    <p>Ens faria molta il·lusió que ens acompanyessis en aquest dia tan especial.</p>
 
-    <button class="btn fade-in" style="animation-delay:0.6s;" onclick="mostrarInvitacio()">
+    <button class="btn" onclick="mostrarInvitacio()">
       Obrir invitació
     </button>
   </div>
@@ -193,7 +142,7 @@
       <option value="Sí">Sí</option>
     </select><br>
 
-    <div id="acompanyantNomDiv" class="hidden fade-field">
+    <div id="acompanyantNomDiv" class="hidden">
       <label>Nom de l'acompanyant</label><br>
       <input type="text" id="acompanyantNom" placeholder="Nom de l'acompanyant"
              style="padding:10px; width:80%; margin-bottom:15px;">
@@ -230,23 +179,9 @@
         localStorage.setItem("nomInvitat", nom);
 
         document.getElementById("login").classList.add("hidden");
-        document.getElementById("sobreAnim").classList.remove("hidden");
+        document.getElementById("welcome").classList.remove("hidden");
 
-        setTimeout(() => {
-          document.getElementById("sobreTancat").classList.add("open");
-        }, 500);
-
-        setTimeout(() => {
-          document.getElementById("sobreObert").classList.remove("hidden");
-          document.getElementById("sobreObert").classList.add("show");
-        }, 1500);
-
-        setTimeout(() => {
-          document.getElementById("sobreAnim").classList.add("hidden");
-          document.getElementById("welcome").classList.remove("hidden");
-          document.getElementById("welcomeName").innerText = nom;
-        }, 3000);
-
+        document.getElementById("welcomeName").innerText = nom;
       } else {
         document.getElementById("error").innerText = "Codi incorrecte";
       }
@@ -271,10 +206,8 @@
 
       if (this.value === "Sí") {
         div.classList.remove("hidden");
-        setTimeout(() => div.classList.add("show"), 10);
       } else {
-        div.classList.remove("show");
-        setTimeout(() => div.classList.add("hidden"), 300);
+        div.classList.add("hidden");
         document.getElementById("acompanyantNom").value = "";
       }
     });
