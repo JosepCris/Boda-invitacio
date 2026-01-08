@@ -124,6 +124,14 @@
     <option value="No">No</option>
     <option value="Sí">Sí</option>
   </select><br>
+  
+  <!-- Nom de l'acompanyant (ocult per defecte) -->
+    <div id="acompanyantNomDiv" class="hidden">
+        <label>Nom de l'acompanyant</label><br>
+         <input type="text" id="acompanyantNom" placeholder="Nom de l'acompanyant"
+         style="padding:10px; width:80%; margin-bottom:15px;">
+    </div>
+
 
   <label>Menú preferit</label><br>
   <select id="menu" style="padding:10px; width:80%; margin-bottom:15px;">
@@ -150,6 +158,18 @@
       "FAM002": "Família 2"
       // Afegir més aquí...
     };
+    
+    document.getElementById("acompanyant").addEventListener("change", function() {
+    const div = document.getElementById("acompanyantNomDiv");
+
+         if (this.value === "Sí") {
+             div.classList.remove("hidden");
+         } else {
+            div.classList.add("hidden");
+            document.getElementById("acompanyantNom").value = "";
+  }
+});
+
 
     function checkCode() {
       const code = document.getElementById("inviteCode").value.trim().toUpperCase();
@@ -184,6 +204,7 @@
         const nom = localStorage.getItem("nomInvitat");
          const assistencia = document.getElementById("assistencia").value;
          const acompanyant = document.getElementById("acompanyant").value;
+         const acompanyantNom = document.getElementById("acompanyantNom").value;
          const menu = document.getElementById("menu").value;
          const alergies = document.getElementById("alergies").value;
 
@@ -193,6 +214,7 @@
         nom: nom,
         assistencia: assistencia,
         acompanyant: acompanyant,
+        acompanyantNom: acompanyantNom,
         menu: menu,
         alergies: alergies
     })
