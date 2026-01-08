@@ -107,6 +107,40 @@
     </button>
   </div>
 
+  <!-- FORMULARI PERSONALITZAT -->
+<div class="card hidden" id="formulari">
+  <h2>Confirmació d'assistència</h2>
+
+  <p><strong>Nom:</strong> <span id="formNom"></span></p>
+
+  <label>Assistiràs?</label><br>
+  <select id="assistencia" style="padding:10px; width:80%; margin-bottom:15px;">
+    <option value="Sí">Sí</option>
+    <option value="No">No</option>
+  </select><br>
+
+  <label>Vindràs amb acompanyant?</label><br>
+  <select id="acompanyant" style="padding:10px; width:80%; margin-bottom:15px;">
+    <option value="No">No</option>
+    <option value="Sí">Sí</option>
+  </select><br>
+
+  <label>Menú preferit</label><br>
+  <select id="menu" style="padding:10px; width:80%; margin-bottom:15px;">
+    <option value="Carn">Carn</option>
+    <option value="Peix">Peix</option>
+    <option value="Vegetarià">Vegetarià</option>
+  </select><br>
+
+  <label>Alergies o intoleràncies</label><br>
+  <input type="text" id="alergies" placeholder="Cap" style="padding:10px; width:80%; margin-bottom:15px;"><br>
+
+  <button class="btn" onclick="enviarFormulari()">Enviar</button>
+
+  <p id="missatgeOK" style="color:green; margin-top:15px;"></p>
+</div>
+
+
   <script>
     // Códigos personalizados por invitado
     const invitats = {
@@ -139,8 +173,43 @@
     }
 
     function anarAFormulari() {
-      alert("Aquí anirà el formulari connectat a Google Sheets 😊");
-    }
+        const nom = localStorage.getItem("nomInvitat");
+
+        document.getElementById("content").classList.add("hidden");
+        document.getElementById("formulari").classList.remove("hidden");
+
+        document.getElementById("formNom").innerText = nom;
+
+    function enviarFormulari() {
+        const nom = localStorage.getItem("nomInvitat");
+         const assistencia = document.getElementById("assistencia").value;
+         const acompanyant = document.getElementById("acompanyant").value;
+         const menu = document.getElementById("menu").value;
+         const alergies = document.getElementById("alergies").value;
+
+    fetch("https://script.google.com/macros/s/AKfycbwBu_23rVEMEgus69SfaU8NJAAe1eN2DaQuOeS1zzqoZbUZ6GkqVs3aUNZ6YWGTDB4x/exec", {
+        method: "POST",
+        body: JSON.stringify({
+        nom: nom,
+        assistencia: assistencia,
+        acompanyant: acompanyant,
+        menu: menu,
+        alergies: alergies
+    })
+  })
+
+    .then(res => res.text())
+    .then(text => {
+        document.getElementById("missatgeOK").innerText = "Resposta enviada! Moltes gràcies ❤️";
+  })
+  .catch(err => {
+    alert("Hi ha hagut un error enviant la resposta.");
+    console.error(err);
+  });
+}
+
+}
+
   </script>
 
 </body>
